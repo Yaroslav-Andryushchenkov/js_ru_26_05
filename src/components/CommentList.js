@@ -13,6 +13,7 @@ class CommentList extends Component {
         isOpen: PropTypes.bool,
         toggleOpen: PropTypes.func
     };
+    
     render() {
         return (
             <div>
