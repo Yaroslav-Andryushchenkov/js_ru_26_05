@@ -24,7 +24,7 @@ class ArticleList extends Component {
 
     toggleOpen = id => ev => {
         this.setState({
-            openedArticle: id
+            openedArticle: (this.state.openedArticle === id ? null : id)
         })
     }
 
