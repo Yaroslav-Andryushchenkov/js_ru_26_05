@@ -4,13 +4,18 @@ import Article from './Article'
 import Chart from './Chart'
 import oneOpen from '../decorators/oneOpen'
 import Select from 'react-select'
+import DayPicker from 'react-day-picker'
+import {DateUtils} from 'react-day-picker'
 
 import 'react-select/dist/react-select.css'
+import 'react-day-picker/lib/style.css'
 
 class ArticleList extends Component {
 
     state = {
-        selected: null
+        selected: null,
+        fromDate: null,
+        toDate: null
     }
 
     componentDidMount() {
@@ -21,17 +26,17 @@ class ArticleList extends Component {
     render() {
         const { articles, isOpen, openItem } = this.props
 
-        const articleItems = articles.map((article) => <li key={article.id}>
+        articles.forEach((item, i, arr) => (arr[i].date = new Date(item.date)))
+        const filteredArticles = articles.filter((item, i, arr) => {return (this.state.fromDate ? (item.date.valueOf() > this.state.fromDate.valueOf()) : true) &&
+                        (this.state.toDate ? (item.date.valueOf() < this.state.toDate.valueOf()) : true)})
+        const articleItems = filteredArticles.map((article) => <li key={article.id}>
             <Article article = {article}
                      isOpen = {isOpen(article.id)}
                 openArticle = {openItem(article.id)}
             />
         </li>)
 
-        const options = articles.map((article) => ({
-            label: article.title,
-            value: article.id
-        }))
+        const options = filteredArticles.map((article) => ({label: article.title, value: article.id}))
 
         return (
             <div>
@@ -45,6 +50,14 @@ class ArticleList extends Component {
                     value= {this.state.selected}
                     multi = {true}
                 />
+                From: <DayPicker
+                        onDayClick = {(e,day)=>{this.setState({fromDate: day})}}
+                        selectedDays = {day => DateUtils.isSameDay(day, this.state.fromDate)}
+                        />
+                To: <DayPicker
+                        onDayClick = {(e,day)=>{this.setState({toDate: day})}}
+                        selectedDays = {day => DateUtils.isSameDay(day, this.state.toDate)}
+                    />
             </div>
         )
     }
