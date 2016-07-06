@@ -1,86 +1,51 @@
 import React, { PropTypes, Component } from 'react'
 import { findDOMNode } from 'react-dom'
+import { Link } from 'react-router'
 import Article from './Article'
 import Chart from './Chart'
+//import Filters from './Filters'
 import oneOpen from '../decorators/oneOpen'
-import Select from 'react-select'
-import DayPicker, { DateUtils } from 'react-day-picker'
-
-import 'react-day-picker/lib/style.css'
-import 'react-select/dist/react-select.css'
 
 class ArticleList extends Component {
 
-    state = {
-        selected: [],
-        from: null,
-        to: null
-    }
-
-    componentDidMount() {
-        console.log('---', 2)
-        console.log('---', findDOMNode(this.refs.chart))
+    static contextTypes = {
+        router: PropTypes.object
     }
 
     render() {
         const { articles, isOpen, openItem } = this.props
-        const { from, to } = this.state
 
-        const articleItems = this.getFilteredArticles().map((article) => <li key={article.id}>
-            <Article article = {article}
-                     isOpen = {isOpen(article.id)}
-                openArticle = {openItem(article.id)}
-            />
+        const articleItems = articles.map((article) => <li key={article.get('id')}>
+            <Link to={`/articles/${article.get('id')}`}
+                  activeClassName = "active"
+                  activeStyle = {{color: 'red'}}
+            >{article.get('title')}</Link>
         </li>)
-
-        const options = articles.map((article) => ({
-            label: article.title,
-            value: article.id
-        }))
 
         return (
             <div>
                 <ul>
                     {articleItems}
                 </ul>
+                <div onClick = {this.redirectToRandomArticle}>
+                    Random article
+                </div>
                 <Chart ref="chart" />
-                <DayPicker
-                    ref="daypicker"
-                    selectedDays={day => DateUtils.isDayInRange(day, {from, to})}
-                    onDayClick={this.setDateRange.bind(this)}
-                />
-                <Select
-                    options = {options}
-                    onChange = {this.handleChange}
-                    value= {this.state.selected}
-                    multi = {true}
-                />
+                {/*<Filters />*/}
             </div>
         )
     }
 
-    getFilteredArticles() {
+    redirectToRandomArticle = () => {
         const { articles } = this.props
-        const { from, to, selected } = this.state
-        return articles
-            .filter((article) => !selected.length || selected.includes(article.id))
-            .filter((article) => !(from || to) || DateUtils.isDayInRange(new Date(article.date), { from, to }))
+        const id = articles.getIn([Math.floor(Math.random() * articles.size), 'id'])
+        this.context.router.push(`/articles/${id}`)
     }
 
-    setDateRange = (e, day) => {
-        const range = DateUtils.addDayToRange(day, this.state)
-        this.setState(range)
-    }
-
-    handleChange = (selected) => {
-        this.setState({
-            selected: selected.map(el => el.value)
-        })
-    }
 }
 
 ArticleList.propTypes = {
-    articles: PropTypes.array.isRequired,
+    articles: PropTypes.object.isRequired,
 
     isOpen: PropTypes.func.isRequired,
     openItem: PropTypes.func.isRequired
