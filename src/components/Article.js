@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import CommentList from './CommentList'
 import { deleteArticle } from '../AC/articles'
+import CommentAddForm from './CommentAddForm'
 
 class Article extends Component {
 
@@ -32,6 +33,7 @@ class Article extends Component {
             <section>
                 {article.text}
                 <CommentList comments = {article.getRelation('comments')} />
+                <CommentAddForm/>
             </section>
         )
     }
