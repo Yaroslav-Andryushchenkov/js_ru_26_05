@@ -1,19 +1,21 @@
 import React, {Component, PropTypes} from 'react'
 
 export default class CommentAddForm extends Component {
+    constructor(...args) {
+        super(...args);
+    }
     state = {
         name: "Test Name",
         text: "Test comment"
     }
     
-    handleDataChange(e, prop) {
+    handleDataChange = (e, prop) => {
         const buf = {};
         buf[prop] = e.target.value;
         this.setState(buf);
     }
 
     handleAddAction = (e) => {
-        alert('zzz');
         e.preventDefault();
         e.stopPropagation();
         this.props.onAdd(this.state);
@@ -30,7 +32,7 @@ export default class CommentAddForm extends Component {
                 <br/>
                 <textarea name="text" id="text" cols="50" defaultValue="Test comment" onChange={e => {this.handleDataChange(e,'text')}}></textarea>
                 <br/>
-                <input type="Button" name="add_button" defaultValue="Add" onclick={this.handleAddAction}></input>
+                <input type="Button" name="add_button" defaultValue="Add" onClick={this.handleAddAction}></input>
             </div>
         )
     }
