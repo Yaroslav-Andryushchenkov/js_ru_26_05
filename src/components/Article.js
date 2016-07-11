@@ -33,7 +33,7 @@ class Article extends Component {
             <section>
                 {article.text}
                 <CommentList comments = {article.getRelation('comments')} />
-                <CommentAddForm onAdd = {addComment} />
+                <CommentAddForm onAdd = {addComment} articleId={article.id} />
             </section>
         )
     }
