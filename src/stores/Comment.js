@@ -10,14 +10,13 @@ export default class CommentStore extends BasicStore {
             switch (type) {
                 case ADD_COMMENT:
                     this._add(payload)
+                    this._emitChange()
                     break
-
 
                 default:
                     return
             }
 
-            this._emitChange()
         })
     }
 }

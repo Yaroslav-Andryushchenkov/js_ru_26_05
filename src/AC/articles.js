@@ -11,11 +11,9 @@ export function deleteArticle(id) {
 }
 
 export function addComment(comment) {
-    console.dir(comment);
     const action = {
         type: ADD_COMMENT,
-        payload: comment
+        payload: Object.assign({id: Date.now()},comment)
     }
-
     AppDispatcher.dispatch(action)
 }

@@ -10,10 +10,12 @@ export default class ArticleStore extends BasicStore {
             switch (type) {
                 case DELETE_ARTICLE:
                     this._delete(payload.id)
+                    this._emitChange()
                     break
 
                 case ADD_COMMENT:
-                    //this._delete(payload.id)
+                    this.getById(payload.article_id).comments.push(payload.id)
+                    this._emitChange()
                     break
 
 
@@ -21,7 +23,7 @@ export default class ArticleStore extends BasicStore {
                     return
             }
 
-            this._emitChange()
+
         })
     }
 }

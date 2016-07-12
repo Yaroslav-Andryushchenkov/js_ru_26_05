@@ -18,7 +18,11 @@ export default class CommentAddForm extends Component {
     handleAddAction = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        this.props.onAdd(this.state);
+        this.props.onAdd({
+            name: this.state.name,
+            text: this.state.text,
+            article_id: this.props.articleId
+        });
     }
     
     render() {
@@ -39,5 +43,6 @@ export default class CommentAddForm extends Component {
 }
 
 CommentAddForm.propTypes = {
-    onAdd: PropTypes.func
+    onAdd: PropTypes.func,
+    articleId: PropTypes.string.isRequred
 }
