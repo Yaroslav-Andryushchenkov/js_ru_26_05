@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
 import NewCommentForm from './NewCommentForm'
+import { loadAllComments } from '../AC/comments'
 
 class CommentList extends Component {
     static defaultProps = {
@@ -14,6 +15,7 @@ class CommentList extends Component {
         isOpen: PropTypes.bool,
         toggleOpen: PropTypes.func
     };
+    
     render() {
         return (
             <div>

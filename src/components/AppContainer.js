@@ -2,11 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import ArticleList from './ArticleList'
 import connectToStore from '../decorators/connectToStore'
 import { loadAllArticles } from '../AC/articles'
+import { loadAllComments } from '../AC/comments'
 
 class AppContainer extends Component {
 
     componentDidMount() {
         loadAllArticles()
+        loadAllComments()
     }
 
     render() {
