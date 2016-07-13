@@ -27,7 +27,15 @@ class CommentList extends Component {
 
     componentDidMount() {
         console.log('I am mounted')
+
     }
+
+    componentWillReceiveProps({ isOpen, article }) {
+        const comments = article.getRelation('comments')
+        if (isOpen && !comments.length && comments[0]) loadAllComments();
+    }
+
+
 
     componentWillUpdate(nextProps) {
         console.log(this.props.isOpen, ' changes to ', nextProps.isOpen)
@@ -45,11 +53,17 @@ class CommentList extends Component {
         if (!isOpen) return null
         const comments = article.getRelation('comments')
         if (!comments || !comments.length) return <h3>No comments yet</h3>
-        const items = comments.map(comment => <li key = {comment.id}><Comment comment = {comment} /></li>)
-        return <div>
-            <ul>{items}</ul>
-            <NewCommentForm articleId={article.id} />
-        </div>
+        if (comments.loading) {
+            return <h3>Loading ... </h3>
+        }
+        else {
+            console.dir(comments);
+            const items = comments.map(comment => <li key={comment.id}><Comment comment={comment}/></li>)
+            return <div>
+                <ul>{items}</ul>
+                <NewCommentForm articleId={article.id}/>
+            </div>
+        }
     }
 }
 
