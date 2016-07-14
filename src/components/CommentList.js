@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
 import NewCommentForm from './NewCommentForm'
-import { loadAllComments } from '../AC/comments'
+import { loadComments } from '../AC/comments'
 
 class CommentList extends Component {
     static defaultProps = {
@@ -32,7 +32,7 @@ class CommentList extends Component {
 
     componentWillReceiveProps({ isOpen, article }) {
         const comments = article.getRelation('comments')
-        if (isOpen && !comments.length && comments[0]) loadAllComments();
+        if (isOpen && !article.loadingComments && (comments.indexOf(undefined) > -1)) loadComments(article.id);
     }
 
 
@@ -53,7 +53,7 @@ class CommentList extends Component {
         if (!isOpen) return null
         const comments = article.getRelation('comments')
         if (!comments || !comments.length) return <h3>No comments yet</h3>
-        if (comments.loading) {
+        if (article.loadingComments) {
             return <h3>Loading ... </h3>
         }
         else {
