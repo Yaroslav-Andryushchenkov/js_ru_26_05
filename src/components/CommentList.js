@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
-import NewCommentForm from './NewCommentForm'
-//import { loadCommentsForArticle } from '../AC/comments'
+//import NewCommentForm from './NewCommentForm'
 import { getRelation } from '../store/utils'
 
 class CommentList extends Component {
@@ -12,7 +11,6 @@ class CommentList extends Component {
 
     static propTypes = {
         article: PropTypes.object.isRequired,
-        //from toggleOpen decorator
         isOpen: PropTypes.bool,
         toggleOpen: PropTypes.func
     };
@@ -24,23 +22,7 @@ class CommentList extends Component {
             </div>
         )
     }
-
-/*
-    componentDidMount() {
-        console.log('I am mounted')
-    }
-
-    componentWillReceiveProps({ isOpen, article }) {
-        if (isOpen && getRelation(article, 'comments').includes(undefined) && !article.loadingComments) loadCommentsForArticle(article)
-    }
-
-    componentWillUpdate(nextProps) {
-        console.log(this.props.isOpen, ' changes to ', nextProps.isOpen)
-    }
-
-
-*/
-
+    
     getToggler() {
         const { isOpen, toggleOpen } = this.props
         const text = isOpen ? 'hide comments' : 'show comments'
@@ -56,7 +38,7 @@ class CommentList extends Component {
         const items = comments.map(comment => <li key = {comment.id}><Comment comment = {comment} /></li>)
         return <div>
             <ul>{items}</ul>
-            <NewCommentForm articleId={article.id} />
+            {/*<NewCommentForm articleId={article.id} />*/}
         </div>
     }
 }
