@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
-//import NewCommentForm from './NewCommentForm'
+import NewCommentForm from './NewCommentForm'
 import { getRelation } from '../store/utils'
 
 class CommentList extends Component {
@@ -38,7 +38,7 @@ class CommentList extends Component {
         const items = comments.map(comment => <li key = {comment.id}><Comment comment = {comment} /></li>)
         return <div>
             <ul>{items}</ul>
-            {/*<NewCommentForm articleId={article.id} />*/}
+            <NewCommentForm articleId={article.id} />
         </div>
     }
 }
